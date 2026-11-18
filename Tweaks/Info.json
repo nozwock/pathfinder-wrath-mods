@@ -1,0 +1,9 @@
+{
+  "Id": "nozwock.Tweaks",
+  "DisplayName": "Nozwock's Tweaks",
+  "Author": "nozwock",
+  "Version": "0.0.1",
+  "ManagerVersion": "0.33.3",
+  "AssemblyName": "Tweaks.dll",
+  "EntryMethod": "Nozwock.Tweaks.Main.Load"
+}

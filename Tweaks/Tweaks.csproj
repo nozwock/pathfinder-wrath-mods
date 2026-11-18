@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Tweaks</AssemblyName>
+    <AssemblyTitle>nozwock.Tweaks</AssemblyTitle>
+  </PropertyGroup>
+</Project>
