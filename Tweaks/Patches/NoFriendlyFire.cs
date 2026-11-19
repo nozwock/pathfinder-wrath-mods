@@ -24,6 +24,9 @@ static class PatchNoFriendlyFire
 {
     static bool IsFriendly(UnitEntityData? caster) => caster != null && !caster.IsPlayersEnemy;
 
+    static bool IsAlly(UnitEntityData unit, UnitEntityData target) =>
+        !unit.IsEnemy(target) && !target.Faction.Neutral;
+
     // Filter target selections to only be the enemies of the caster for non-persistent AOE abilities.
     [HarmonyPostfix]
     [HarmonyPatch(typeof(AbilityTargetsAround), nameof(AbilityTargetsAround.Select))]
@@ -48,7 +51,7 @@ static class PatchNoFriendlyFire
 
         if (__instance.Targets == TargetType.Any && !___m_Condition.HasIsAllyCondition())
         {
-            __result = __result.Where(t => t.Unit == null || caster!.IsEnemy(t.Unit));
+            __result = __result.Where(t => t.Unit == null || !IsAlly(caster!, t.Unit));
         }
     }
 
@@ -80,7 +83,7 @@ static class PatchNoFriendlyFire
                     return true;
             }
 
-            if (!caster!.IsEnemy(unit))
+            if (IsAlly(caster!, unit))
             {
                 __result = false;
                 return false;
@@ -103,7 +106,7 @@ static class PatchNoFriendlyFire
         if (!IsFriendly(caster))
             return true;
 
-        if (!caster!.IsEnemy(unit))
+        if (IsAlly(caster!, unit))
         {
             var bp = context?.Ability?.Blueprint;
             if (bp != null)
@@ -141,7 +144,7 @@ static class PatchNoFriendlyFire
         if (
             ___m_TargetType == TargetType.Any
             && !___m_Condition.HasIsAllyCondition()
-            && !caster!.IsEnemy(unit)
+            && IsAlly(caster!, unit)
         )
         {
             __result = false;
@@ -180,7 +183,7 @@ static class PatchNoFriendlyFire
         if (!IsFriendly(caster))
             return true;
 
-        if (!caster!.IsEnemy(unit))
+        if (IsAlly(caster!, unit))
         {
             var bp = __instance.Blueprint;
             if (bp != null && !bp.NotOffensive && bp.EffectOnAlly != AbilityEffectOnUnit.Helpful)
@@ -221,7 +224,7 @@ static class PatchNoFriendlyFire
 
         if (__instance.Targets == TargetType.Any && !___m_Condition.HasIsAllyCondition())
         {
-            __result = __result.Where(t => t.Unit == null || caster!.IsEnemy(t.Unit));
+            __result = __result.Where(t => t.Unit == null || !IsAlly(caster!, t.Unit));
         }
     }
 
@@ -241,7 +244,7 @@ static class PatchNoFriendlyFire
 
         if (___m_TargetType == TargetType.Any && !___m_Condition.HasIsAllyCondition())
         {
-            __result = __result.Where(t => t.Unit == null || caster!.IsEnemy(t.Unit));
+            __result = __result.Where(t => t.Unit == null || !IsAlly(caster!, t.Unit));
         }
     }
     #endregion
