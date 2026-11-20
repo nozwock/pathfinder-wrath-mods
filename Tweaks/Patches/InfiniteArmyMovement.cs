@@ -8,6 +8,7 @@ using Kingmaker.Kingdom;
 
 namespace Nozwock.Tweaks.Patches;
 
+[HarmonyPatchCategory(nameof(Settings.InfiniteArmyMovement))]
 [HarmonyPatch(typeof(GlobalMapArmyState))]
 static class PatchInfiniteArmyMovement
 {

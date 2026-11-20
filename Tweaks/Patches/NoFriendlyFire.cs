@@ -19,6 +19,7 @@ namespace Nozwock.Tweaks.Patches;
 // 1. It only works for party members and not event allies like soldiers, etc.
 // 2. The spells don't ignore the allies completely but instead makes it so they always succeed the saving throws which
 //    results in 0 damage or saving throws success messaged being shown.
+[HarmonyPatchCategory(nameof(Settings.NoFriendlyFire))]
 [HarmonyPatch]
 static class PatchNoFriendlyFire
 {
