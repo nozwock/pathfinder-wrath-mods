@@ -1,5 +1,7 @@
 using System;
 using HarmonyLib;
+using Kingmaker.Utility;
+using Nozwock.Tweaks.Patches;
 using UnityEngine;
 using UnityModManagerNet;
 
@@ -44,7 +46,20 @@ static class Main
         try
         {
             _harmony?.SetPatchCategory(nameof(Settings.NoFriendlyFire), Settings.NoFriendlyFire);
+
             _harmony?.SetPatchCategory(nameof(Settings.InfiniteArmyMovement), Settings.InfiniteArmyMovement);
+
+            _harmony?.SetPatchCategory(nameof(Settings.DisableWeatherVfx), Settings.DisableWeatherVfx);
+            _harmony?.SetPatchCategory(nameof(Settings.DisableAmbientParticles), Settings.DisableAmbientParticles);
+            _harmony?.SetPatchCategory(nameof(Settings.DisableNonEssentialCombatVfx), Settings.DisableNonEssentialCombatVfx);
+            _harmony?.SetPatchCategory(nameof(Settings.DisableCosmeticDecals), Settings.DisableCosmeticDecals);
+
+            _harmony?.SetPatchCategory(nameof(Settings.DisableClothPhysics), Settings.DisableClothPhysics);
+            _harmony?.SetPatchCategory(nameof(Settings.HideAllCapes), Settings.HideAllCapes);
+
+            BuildModeUtility.Data?.CompensateCharacterAtlasMips = Settings.FixAtlasDoubleDownscale;
+            PatchDisableClothPhysics.OnUpdate();
+            PatchHideAllCapes.OnUpdate();
         }
         catch (Exception ex)
         {
@@ -119,6 +134,59 @@ static class Main
                 "Infinite Army Movement Points"
             );
         }
+        GUILayout.Space(4);
+        GUILayout.EndVertical();
+
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("<b>Graphics</b>");
+        {
+            CategoryToggle(
+                ref Settings.DisableWeatherVfx,
+                nameof(Settings.DisableWeatherVfx),
+                "Disable Weather VFX",
+                "(Falling snow, rain, fog particles, thunder flashes, etc.)"
+            );
+            CategoryToggle(
+                ref Settings.DisableAmbientParticles,
+                nameof(Settings.DisableAmbientParticles),
+                "Disable Ambient Particles",
+                "(Chimney smoke, local scene dust, falling particles, etc.)"
+            );
+            CategoryToggle(
+                ref Settings.DisableNonEssentialCombatVfx,
+                nameof(Settings.DisableNonEssentialCombatVfx),
+                "Disable Non-Essential Combat VFX",
+                "(Blood puddles, minor cosmetic impact sparks, etc.)"
+            );
+            CategoryToggle(
+                ref Settings.DisableCosmeticDecals,
+                nameof(Settings.DisableCosmeticDecals),
+                "Disable Cosmetic Ground Decals",
+                "(Blood splatters, footprint decals, etc.)"
+            );
+
+            CategoryToggle(
+                ref Settings.DisableClothPhysics,
+                nameof(Settings.DisableClothPhysics),
+                "Disable Cloth Physics",
+                onToggled: PatchDisableClothPhysics.OnUpdate
+            );
+
+            CategoryToggle(
+                ref Settings.HideAllCapes,
+                nameof(Settings.HideAllCapes),
+                "Hide All Capes",
+                onToggled: PatchHideAllCapes.OnUpdate
+            );
+
+            Settings.FixAtlasDoubleDownscale = Toggle(
+                Settings.FixAtlasDoubleDownscale,
+                "Fix Character Atlas Double-Downscaling",
+                "(Prevents blurry 128x128 character texture on Low.)"
+            );
+        }
+        BuildModeUtility.Data?.CompensateCharacterAtlasMips = Settings.FixAtlasDoubleDownscale;
+
         GUILayout.Space(4);
         GUILayout.EndVertical();
     }
