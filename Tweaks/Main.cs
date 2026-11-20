@@ -25,13 +25,13 @@ static class Main
     {
         if (value)
         {
-            _harmony?.UnpatchAll();
+            _harmony?.UnpatchAll(modEntry.Info.Id);
             _harmony = new Harmony(modEntry.Info.Id);
             _harmony.PatchAll();
         }
         else
         {
-            _harmony?.UnpatchAll();
+            _harmony?.UnpatchAll(modEntry.Info.Id);
             _harmony = null;
         }
 
