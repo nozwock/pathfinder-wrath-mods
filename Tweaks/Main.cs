@@ -48,6 +48,7 @@ static class Main
             _harmony?.SetPatchCategory(nameof(Settings.NoFriendlyFire), Settings.NoFriendlyFire);
 
             _harmony?.SetPatchCategory(nameof(Settings.InfiniteArmyMovement), Settings.InfiniteArmyMovement);
+            _harmony?.SetPatchCategory(nameof(Settings.NoTeleportCooldown), Settings.NoTeleportCooldown);
 
             _harmony?.SetPatchCategory(nameof(Settings.DisableWeatherVfx), Settings.DisableWeatherVfx);
             _harmony?.SetPatchCategory(nameof(Settings.DisableAmbientParticles), Settings.DisableAmbientParticles);
@@ -132,6 +133,12 @@ static class Main
                 ref Settings.InfiniteArmyMovement,
                 nameof(Settings.InfiniteArmyMovement),
                 "Infinite Army Movement Points"
+            );
+            CategoryToggle(
+                ref Settings.NoTeleportCooldown,
+                nameof(Settings.NoTeleportCooldown),
+                "Disable Crusade Teleport Cooldown",
+                "(Removes the 1-day cooldown when using the Party Teleportation spell on the world map.)"
             );
         }
         GUILayout.Space(4);
