@@ -48,6 +48,7 @@ static class Main
             _harmony?.SetPatchCategory(nameof(Settings.NoFriendlyFire), Settings.NoFriendlyFire);
 
             _harmony?.SetPatchCategory(nameof(Settings.InfiniteArmyMovement), Settings.InfiniteArmyMovement);
+            _harmony?.SetPatchCategory(nameof(Settings.VillageTeleportCircle), Settings.VillageTeleportCircle);
             _harmony?.SetPatchCategory(nameof(Settings.NoTeleportCooldown), Settings.NoTeleportCooldown);
 
             _harmony?.SetPatchCategory(nameof(Settings.DisableWeatherVfx), Settings.DisableWeatherVfx);
@@ -133,6 +134,13 @@ static class Main
                 ref Settings.InfiniteArmyMovement,
                 nameof(Settings.InfiniteArmyMovement),
                 "Infinite Army Movement Points"
+            );
+            CategoryToggle(
+                ref Settings.VillageTeleportCircle,
+                nameof(Settings.VillageTeleportCircle),
+                "Disable Teleportation Circle Restrictions",
+                "(Allow building Teleportation Circles on basic forts.)",
+                () => PatchVillageTeleportCircle.OnToggle(Settings.VillageTeleportCircle)
             );
             CategoryToggle(
                 ref Settings.NoTeleportCooldown,
