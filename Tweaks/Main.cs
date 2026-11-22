@@ -46,6 +46,7 @@ static class Main
         try
         {
             _harmony?.SetPatchCategory(nameof(Settings.NoFriendlyFire), Settings.NoFriendlyFire);
+            _harmony?.SetPatchCategory(nameof(Settings.RelicInfo), Settings.RelicInfo);
 
             _harmony?.SetPatchCategory(nameof(Settings.InfiniteArmyMovement), Settings.InfiniteArmyMovement);
             _harmony?.SetPatchCategory(nameof(Settings.VillageTeleportCircle), Settings.VillageTeleportCircle);
@@ -122,6 +123,12 @@ static class Main
                 nameof(Settings.NoFriendlyFire),
                 "Disable Friendly Fire",
                 "(Spells and abilities will no longer damage allies.)"
+            );
+            CategoryToggle(
+                ref Settings.RelicInfo,
+                nameof(Settings.RelicInfo),
+                "Show More Relic Info",
+                "(Displays intermediate choices and final relic item rewards on relic decrees and events.)"
             );
         }
         GUILayout.Space(4);

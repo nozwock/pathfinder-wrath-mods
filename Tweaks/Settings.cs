@@ -5,6 +5,7 @@ namespace Nozwock.Tweaks;
 public class Settings : UnityModManager.ModSettings
 {
     public bool NoFriendlyFire = true;
+    public bool RelicInfo = true;
 
     public bool InfiniteArmyMovement = false;
     public bool VillageTeleportCircle = true;

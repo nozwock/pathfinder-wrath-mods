@@ -57,10 +57,10 @@
   <ItemGroup>
     <Reference Include="$(ManagedDir)/Assembly-CSharp.dll" Publicize="true" Private="false" />
     <Reference Include="$(ManagedDir)/Assembly-CSharp-firstpass.dll" Publicize="true" Private="false" />
-    <Reference Include="$(ManagedDir)/Owlcat.Runtime.Core.dll" Publicize="true" Private="false" />
+    <Reference Include="$(ManagedDir)/Owlcat*.dll" Publicize="true" Private="false" />
     <Reference
       Include="$(ManagedDir)/*.dll;$(ManagedDir)/UnityModManager/*.dll"
-      Exclude="$(ManagedDir)/Assembly-CSharp*.dll;$(ManagedDir)/0Harmony.dll;$(ManagedDir)/Owlcat.Runtime.Core.dll;$(ManagedDir)/System*.dll;$(ManagedDir)/mscorlib.dll;$(ManagedDir)/netstandard.dll;"
+      Exclude="$(ManagedDir)/Assembly-CSharp*.dll;$(ManagedDir)/0Harmony.dll;$(ManagedDir)/Owlcat*.dll;$(ManagedDir)/System*.dll;$(ManagedDir)/mscorlib.dll;$(ManagedDir)/netstandard.dll;"
       Private="false"
     />
   </ItemGroup>
