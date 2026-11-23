@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Common.EnumerableExtensions;
 using HarmonyLib;
 using Kingmaker;
 using Kingmaker.Blueprints;
@@ -21,7 +22,7 @@ using Kingmaker.Utility;
 namespace Nozwock.Tweaks.Patches;
 
 // References:
-// https://github.com/cabarius/ToyBox/blob/6582da76f7f613600c1d7b986b15fdc5862f43f3/ToyBox/classes/MonkeyPatchin/PreviewManagerWrath.cs#L507-L556
+// https://github.com/xADDBx/ToyBox-Wrath/blob/dc1a906ea4d604e2356b525964005311841b8f40/ToyBox/Classes/MonkeyPatchin/PreviewManagerWrath.cs#L510-L557
 //
 // Adds support for showing relic info on event cards besides just decree cards.
 [HarmonyPatchCategory(nameof(Settings.RelicInfo))]
@@ -143,25 +144,27 @@ static class PatchRelicInfo
         var sb = new StringBuilder();
         var triggerFlags = ConditionFlags(crusadeProject?.TriggerCondition);
 
+        // We're going to cover all possible subEvents despite just the first subEvent sufficing since with the way the
+        // game's structured there will only ever be one shared subEvent covering all further (enchant) choices.
+        var allChoiceFlags = crusadeEvent.EventSolutions.SelectMany(EventChoiceFlags).ToList();
+        var subEvents = !allChoiceFlags.Empty()
+            ? allRelicProjects
+                .Where(it => it != crusadeProject && ConditionFlags(it.TriggerCondition).Any(allChoiceFlags.Contains))
+                .Select(GetStartEvent)
+                .WhereNotNull()
+                .Distinct() // Due to allChoiceFlags
+                .ToList()
+            : [];
+
         foreach (var choice in GetFinalSolutions(crusadeEvent, triggerFlags))
         {
             sb.Append("\n");
             sb.Append(CustomEventChoiceText(choice));
 
-            var choiceFlags = EventChoiceFlags(choice).ToList();
-            var subProjects = allRelicProjects.Where(it =>
-                it != crusadeProject && ConditionFlags(it.TriggerCondition).Any(choiceFlags.Contains));
-
-            foreach (var subProject in subProjects)
+            foreach (var subChoice in subEvents.SelectMany(it => GetFinalSolutions(it, EventChoiceFlags(choice))))
             {
-                if (GetStartEvent(subProject) is { } subEvent)
-                {
-                    foreach (var subChoice in GetFinalSolutions(subEvent, choiceFlags))
-                    {
-                        sb.Append("\n    ");
-                        sb.Append(CustomEventChoiceText(subChoice));
-                    }
-                }
+                sb.Append("\n    ");
+                sb.Append(CustomEventChoiceText(subChoice));
             }
         }
 
