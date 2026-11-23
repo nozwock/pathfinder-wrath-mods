@@ -96,14 +96,21 @@ static class PatchRelicInfo
         BlueprintCrusadeEvent crusadeEvent,
         IEnumerable<BlueprintUnlockableFlag>? allowedFlags)
     {
-        var anyAvailable = crusadeEvent.EventSolutions.Any(it => it.IsAvail);
+        if (allowedFlags != null && !allowedFlags.Empty())
+        {
+            return crusadeEvent.EventSolutions.Where(choice =>
+            {
+                var requiredFlags = ConditionFlags(choice.m_AvailConditions).ToList();
+                return requiredFlags.Empty() || allowedFlags.Any(requiredFlags.Contains);
+            });
+        }
+
         return crusadeEvent.EventSolutions.Where(choice =>
         {
-            if (anyAvailable)
-                return choice.IsAvail;
+            if (choice.IsAvail)
+                return true;
 
-            var requiredFlags = ConditionFlags(choice.m_AvailConditions).ToList();
-            return requiredFlags.Empty() || (allowedFlags != null && allowedFlags.Any(requiredFlags.Contains));
+            return ConditionFlags(choice.m_AvailConditions).Empty();
         });
     }
 
