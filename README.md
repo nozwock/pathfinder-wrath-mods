@@ -12,4 +12,13 @@
     ```
 3. Extract the contents of mod archives into `<Game Folder>/Mods/`.
 
+## Build
+
+1. Define `GamePath` property in `Local.props` next to `Directory.Build.props`.
+2. Define `MOD_PATH` in an `.env` file in the repo's root.
+    ```
+    MOD_PATH="<Game Folder>/Mods"
+    ```
+3. Run [just] `dev` from within a mod subdirectory to install the mod.
+
 [umm]: https://www.nexusmods.com/site/mods/21
