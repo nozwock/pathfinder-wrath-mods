@@ -22,3 +22,4 @@
 3. Run [just] `dev` from within a mod subdirectory to install the mod.
 
 [umm]: https://www.nexusmods.com/site/mods/21
+[just]: https://github.com/casey/just
